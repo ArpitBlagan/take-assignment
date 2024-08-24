@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  profileImage String
+  boughtTests   Test[]   @relation("UserPurchasedTests")
+  testsCreated  Test[]   @relation("UserCreatedTests")
+  testHistory History[]
+  review Review[]
+}
+
+model Test{
+  id String @id @default(uuid())
+  title String
+  description String
+  topic String
+  difficulty Difficulty
+  purchasers User[] @relation("UserPurchasedTests")
+  questionCount Int
+  postedAt DateTime @default(now())
+  userId String
+  user User @relation("UserCreatedTests",fields: [userId],references: [id])
+  questions question[]
+  Submission History[]
+  review Review[]
+}
+
+model question{
+  id String @id @default(uuid())
+  problemStatement String
+  option String[]
+  correctOption String
+  testId String
+  test Test @relation(references: [id],fields: [testId])
+}
+
+model History{
+  id String @id @default(uuid())
+  score Int
+  timing Int
+  userId String
+  testId String
+  user User @relation(fields: [userId],references: [id])
+  test Test @relation(fields: [testId],references: [id])
+  completedAt DateTime @default(now())
+}
+
+model Review{
+  id String @id @default(uuid())
+  comment String
+  userId String
+  testId String
+  user User @relation(fields: [userId],references: [id])
+  test Test @relation(fields: [testId],references: [id])
+  parentId     String?
+  parent       Review?    @relation("ParentComment", fields: [parentId], references: [id])
+  children     Review[]   @relation("ParentComment")
+  createdAt    DateTime    @default(now())
+}
+
+enum Difficulty{
+  BEGINNER
+  MEDIUM
+  HARD
+}
