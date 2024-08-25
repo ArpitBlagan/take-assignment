@@ -7,9 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
+import { Baseurl } from "./Constant";
 
-// import { useContext } from "react";
-// import { context } from "./Context";
+import { useContext } from "react";
+import { con } from "./Context";
 const LoginSchema = z.object({
   email: z.string().email("enter valid email"),
   password: z.string().min(6, "password should be atleast 6 characters long"),
@@ -17,7 +18,7 @@ const LoginSchema = z.object({
 type login = z.infer<typeof LoginSchema>;
 const Signin = () => {
   const navigate = useNavigate();
-  //   const value = useContext(context);
+  const value = useContext(con);
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const dd = useRef(null);
@@ -45,18 +46,18 @@ const Signin = () => {
     setLoading(true);
     toast({ title: "Login initiated" });
     try {
-      //   const res = await axios.post(`${baseUrl}/login`, body, {
-      //     withCredentials: true,
-      //   });
-      //   console.log(res.data);
-      //   value?.setIsLoggedIn(true);
-      //   value?.setUser({
-      //     name: res.data.name,
-      //     email: res.data.email,
-      //     image: res.data.image,
-      //     id: res.data.id,
-      //   });
-      //   navigate("/");
+      const res = await axios.post(`${Baseurl}/login`, body, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+      value?.setUser({
+        isLoggedIn: true,
+        name: res.data.name,
+        email: res.data.email,
+        profileImage: res.data.image,
+        id: res.data.id,
+      });
+      navigate("/");
     } catch (err) {
       toast({
         variant: "destructive",
@@ -75,13 +76,17 @@ const Signin = () => {
   return (
     <div className="h-[80dvh] flex items-center justify-center my-10">
       <form
-        className="flex flex-col items-center border rounded-t-xl justify-center gap-3 lg:w-8/12 w-full  z-10 py-10 px-4 mx-10"
+        className="flex flex-col items-center border rounded-t-xl justify-center gap-3 
+        lg:w-8/12 w-full  z-10 py-10 px-4 mx-10"
         style={{ backgroundColor: "#121212" }}
         onSubmit={handleSubmit(onSubmit)}
         ref={dd}
       >
+        <p className="text-center font-semibold text-2xl mb-5">
+          Welcome Back 🤙🏻
+        </p>
         <p className="text-center text-gray-400 mb-5">
-          <span className="text-semibold text-[25px] block">Signin</span>
+          <span className="text-semibold text-[20px] block">Signin</span>
           <span>
             Don't have an Account?{" "}
             <Link to="/Signup" className="underline">

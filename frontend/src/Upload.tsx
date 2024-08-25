@@ -11,28 +11,63 @@ import {
 } from "@/components/ui/select";
 import * as z from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Baseurl } from "./Constant";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "./components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const uploadSchema = z.object({
   title: z.string().min(1, "Field is required"),
-  description: z.string().min(1, "Field is required").max(120, ""),
-  file: z
-    .any()
-    // To not allow empty files
-    .refine((files) => files?.length >= 1, {
-      message: "CSV file is required.",
-    }),
+  description: z
+    .string()
+    .min(1, "Field is required")
+    .max(420, "atmost 420 characters are allowed"),
   diffculty: z.string().min(1, "Field is required"),
   topic: z.string().min(1, "Field is required"),
 });
 type uploadType = z.infer<typeof uploadSchema>;
 const Upload = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState<any | null>(null);
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm<uploadType>({ resolver: zodResolver(uploadSchema) });
-  const onSubmit: SubmitHandler<uploadType> = async (data) => {};
+  const onSubmit: SubmitHandler<uploadType> = async (data) => {
+    console.log(data);
+    if (!file) {
+      toast({
+        variant: "destructive",
+        title: "Please choose question's csv file first",
+      });
+      return;
+    }
+    toast({ title: "uploading test:)" });
+    try {
+      setLoading(true);
+      const formdata = new FormData();
+      formdata.append("file", file);
+      formdata.append("title", data.title);
+      formdata.append("description", data.description);
+      formdata.append("topic", data.topic);
+      formdata.append("difficulty", data.diffculty);
+      await axios.post(`${Baseurl}/uploadtest`, formdata, {
+        withCredentials: true,
+      });
+      navigate("/tests");
+      setLoading(false);
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "something went wrong while uploading test:(",
+      });
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-[80dvh] flex items-center justify-center mt-10">
       <form
@@ -71,9 +106,9 @@ const Upload = () => {
                 />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Beginner">Beginner</SelectItem>
-                <SelectItem value="Medium">Medium</SelectItem>
-                <SelectItem value="Hard">Hard</SelectItem>
+                <SelectItem value="BEGINNER">Beginner</SelectItem>
+                <SelectItem value="MEDIUM">Medium</SelectItem>
+                <SelectItem value="HARD">Hard</SelectItem>
               </SelectContent>
             </Select>
             {errors.diffculty && (
@@ -95,6 +130,7 @@ const Upload = () => {
                 <SelectItem value="English">English</SelectItem>
                 <SelectItem value="Aptitude">Aptitude</SelectItem>
                 <SelectItem value="Database">Database</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
             {errors.topic && (
@@ -108,17 +144,20 @@ const Upload = () => {
             type="file"
             accept=".csv"
             className="text-gray-400 dark:bg-gray-700"
-            {...register("file")}
+            onChange={(e: any) => {
+              setFile(e.target.files[0]);
+            }}
           />
-          {errors.file && (
-            <span className="text-red-500">{errors.file?.message}</span>
-          )}
           <p className=" text-sm text-gray-500 text-center">
             ** Put the list of questions into a csv file and then upload it **
           </p>
         </div>
         <div className="flex items-center justify-center ">
-          <Button className="w-1/2 bg-green-700" type="submit">
+          <Button
+            className="w-1/2 bg-green-700"
+            type="submit"
+            disabled={loading}
+          >
             Upload
           </Button>
         </div>

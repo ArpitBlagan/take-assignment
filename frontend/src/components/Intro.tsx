@@ -1,11 +1,19 @@
 import { Button } from "./ui/button";
 
-const Intro = ({ description, title, questionCount, id, setId }: any) => {
+const Intro = ({
+  description,
+  title,
+  questionCount,
+  id,
+  setId,
+  setIsFullscreen,
+  loading,
+}: any) => {
   return (
     <div className="flex flex-col  gap-4 py-10 px-4 border rounded-xl w-full">
       <div className="flex-1 ">
-        <p className="text-2xl text-center">{title}</p>
-        <p className="text-center text-md">{description}</p>
+        <p className="text-2xl text-center font-semibold">{title}</p>
+        <p className="text-center text-md ">{description}</p>
         <p className=" text-end">
           <span className="text-gray-700 font-semibold">Total questions</span>{" "}
           {questionCount}
@@ -31,9 +39,11 @@ const Intro = ({ description, title, questionCount, id, setId }: any) => {
           onClick={(e) => {
             e.preventDefault();
             setId(id + 1);
+            setIsFullscreen(true);
           }}
+          disabled={loading}
         >
-          Start then 🚀
+          {loading ? "Wait " : "Start then 🚀"}
         </Button>
       </div>
     </div>

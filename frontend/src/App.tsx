@@ -9,9 +9,12 @@ import Tests from "./Tests";
 import Test from "./Test";
 import Arena from "./Arena";
 import Upload from "./Upload";
+import { Toaster } from "@/components/ui/toaster";
+import Submissions from "./Submissions";
 function App() {
   return (
     <Router>
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -19,8 +22,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/tests" element={<Tests />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/arena" element={<Arena />} />
+        <Route path="/arena/:testId" element={<Arena />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/submissions" element={<Submissions />} />
       </Routes>
       <Footer />
     </Router>

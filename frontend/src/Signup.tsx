@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { baseUrl } from "./constant";
 import axios from "axios";
+import { Baseurl } from "./Constant";
 const RegisterSchema = z.object({
   name: z.string().min(1, "please fill the field"),
   email: z.string().email("enter valid email"),
@@ -18,6 +18,7 @@ type register = z.infer<typeof RegisterSchema>;
 const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const MAX_FILE_SIZE = 1 * 1024 * 1024;
   const [file, setFile] = useState<null | any>(null);
   const [preview, setPreview] = useState<null | any>(null);
   const dd = useRef(null);
@@ -55,23 +56,24 @@ const Signup = () => {
         title: "Uh oh! Something went wrong.",
         description: "Please select a image as your profile image:(",
       });
+      return;
     }
     setLoading(true);
     try {
-      //   const formData = new FormData();
-      //   formData.append("file", file);
-      //   const url = await axios.post(`${baseUrl}/upload`, formData);
-      //   console.log("imageUrl", url.data);
-      //   const body = {
-      //     name: data.name,
-      //     email: data.email,
-      //     password: data.password,
-      //     image: url.data,
-      //   };
-      //   const res = await axios.post(`${baseUrl}/register`, body);
-      //   console.log(res.data);
+      const formData = new FormData();
+      formData.append("file", file);
+      const url = await axios.post(`${Baseurl}/upload`, formData);
+      console.log("imageUrl", url.data);
+      const body = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        profileImage: url,
+      };
+      const res = await axios.post(`${Baseurl}/register`, body);
+      console.log(res.data);
       toast({ title: "User Registered:)" });
-      navigate("/login");
+      navigate("/signin");
     } catch (err) {
       console.log(err);
       toast({
@@ -110,6 +112,7 @@ const Signup = () => {
             <span className="text-red-500">{errors.name.message}</span>
           )}
         </div>
+
         <div className="flex flex-col gap-3 items-start md:w-1/2 w-full">
           <label className="text-gray-400">Email</label>
           <Input
@@ -139,8 +142,18 @@ const Signup = () => {
             className="w-full bg-gray-800"
             type="file"
             placeholder="Select file"
+            accept="image/*"
             onChange={async (e: any) => {
               const ff = e.target.files[0];
+              console.log("size of file", ff.size, MAX_FILE_SIZE);
+              if (ff && ff.size > MAX_FILE_SIZE) {
+                toast({
+                  title:
+                    "file size is too large (please upload image size of atmax 2 mb)",
+                  variant: "destructive",
+                });
+                return;
+              }
               setFile(ff);
               const reader = new FileReader();
               reader.onloadend = () => {

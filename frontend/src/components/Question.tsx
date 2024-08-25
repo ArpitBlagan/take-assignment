@@ -1,7 +1,14 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "./ui/button";
 
-const Question = ({ questionStatement, options, setId, id }: any) => {
+const Question = ({
+  questionStatement,
+  options,
+  setId,
+  id,
+  answer,
+  setAnswers,
+}: any) => {
   return (
     <div className="flex flex-col  gap-5 items-center justify-center">
       <p>
@@ -14,9 +21,23 @@ const Question = ({ questionStatement, options, setId, id }: any) => {
             <div
               key={index}
               className="flex items-center gap-3 border py-2 px-4 rounded-lg cursor-pointer"
+              onClick={() => {
+                if (answer.answer == ele) {
+                  setAnswers((prevArr: any) =>
+                    prevArr.map((item: any, i: number) =>
+                      i === id ? { ...item, answer: "", answered: false } : item
+                    )
+                  );
+                } else {
+                  setAnswers((prevArr: any) =>
+                    prevArr.map((item: any, i: number) =>
+                      i === id ? { ...item, answer: ele, answered: true } : item
+                    )
+                  );
+                }
+              }}
             >
-              <Checkbox id={index} />
-              <span>{index + 1}</span>
+              <Checkbox checked={answer.answer == ele} />
 
               <p>{ele}</p>
             </div>

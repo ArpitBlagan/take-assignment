@@ -18,7 +18,7 @@ model User{
   name String
   email String
   password String
-  profileImage String
+  profileImage String?
   boughtTests   Test[]   @relation("UserPurchasedTests")
   testsCreated  Test[]   @relation("UserCreatedTests")
   testHistory History[]
@@ -30,6 +30,7 @@ model Test{
   title String
   description String
   topic String
+  price Int
   difficulty Difficulty
   purchasers User[] @relation("UserPurchasedTests")
   questionCount Int
