@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.testSubmission = exports.getReviews = exports.addReview = exports.getTest = exports.geTests = exports.uploadTest = void 0;
+exports.getSubmissions = exports.testSubmission = exports.getReviews = exports.addReview = exports.getTest = exports.geTests = exports.uploadTest = void 0;
 const csv_parse_1 = require("csv-parse");
 const fs_1 = __importDefault(require("fs"));
 const __1 = require("..");
@@ -188,3 +188,20 @@ const testSubmission = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.testSubmission = testSubmission;
+const getSubmissions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const history = yield __1.prisma.history.findMany({
+            where: { userId: req.user.id },
+            skip: 0,
+            take: 10,
+            orderBy: { completedAt: "desc" },
+            include: { test: true },
+        });
+        console.log(history);
+        res.status(200).json(history);
+    }
+    catch (err) {
+        res.status(500).json({ message: "something went wrong:(" });
+    }
+});
+exports.getSubmissions = getSubmissions;

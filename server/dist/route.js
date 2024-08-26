@@ -32,3 +32,4 @@ exports.router.route("/uploadtest").post(upload.single("file"), test_1.uploadTes
 exports.router.route("/postreview").post(test_1.addReview);
 exports.router.route("/getreviews").get(test_1.getReviews);
 exports.router.route("/gettest").get(test_1.getTest);
+exports.router.route("/submit").post(test_1.testSubmission).get(test_1.getSubmissions);

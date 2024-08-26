@@ -125,7 +125,7 @@ const Tests = () => {
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <EllipsisVerticalIcon className="cursor-pointer w-[100px] h-[100px]" />
+                      <EllipsisVerticalIcon className="cursor-pointer w-[50px] h-[50px]" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>
@@ -166,9 +166,25 @@ const Tests = () => {
         </div>
       </div>
       <div className="flex items-center justify-center gap-5">
-        <Button disabled={testPage == 0}>Prev</Button>
+        <Button
+          disabled={testPage == 0}
+          onClick={(e) => {
+            e.preventDefault();
+            setTestPage(testPage - 1);
+          }}
+        >
+          Prev
+        </Button>
         <span className="text-2xl">/</span>
-        <Button disabled={tests.length < 12}>Next</Button>
+        <Button
+          disabled={tests.length < 12}
+          onClick={(e) => {
+            e.preventDefault();
+            setTestPage(testPage + 1);
+          }}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

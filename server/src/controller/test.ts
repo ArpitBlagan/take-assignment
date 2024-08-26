@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { parse } from "csv-parse";
 import fs from "fs";
 import { prisma } from "..";
+import { skip } from "node:test";
 export const uploadTest = async (req: Request, res: Response) => {
   if (!req.file) {
     return res.status(400).json({ message: "no csv file found" });
@@ -160,6 +161,22 @@ export const testSubmission = async (req: Request, res: Response) => {
         timing: 0,
       },
     });
+    res.status(200).json(history);
+  } catch (err) {
+    res.status(500).json({ message: "something went wrong:(" });
+  }
+};
+
+export const getSubmissions = async (req: Request, res: Response) => {
+  try {
+    const history = await prisma.history.findMany({
+      where: { userId: req.user.id },
+      skip: 0,
+      take: 10,
+      orderBy: { completedAt: "desc" },
+      include: { test: true },
+    });
+    console.log(history);
     res.status(200).json(history);
   } catch (err) {
     res.status(500).json({ message: "something went wrong:(" });

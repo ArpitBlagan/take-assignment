@@ -81,15 +81,19 @@ const Arena = () => {
   if (id == -1) {
     return (
       <div className="min-h-[90dvh] flex items-center justify-center">
-        <Intro
-          title={"DSA Mcq's"}
-          description={"asdfasdf as df asdf a f asdf"}
-          questionCount={10}
-          id={id}
-          setId={setId}
-          setIsFullscreen={setIsFullscreen}
-          loading={loading}
-        />
+        {test ? (
+          <Intro
+            title={test.title}
+            description={test.description}
+            questionCount={test.questionCount}
+            id={id}
+            setId={setId}
+            setIsFullscreen={setIsFullscreen}
+            loading={loading}
+          />
+        ) : (
+          <div>{loading ? "Loading..." : "Oops something went wrong 😑"}</div>
+        )}
       </div>
     );
   } else if (test.questions.length == id) {

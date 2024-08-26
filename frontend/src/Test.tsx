@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "./components/ui/input";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "./components/ui/use-toast";
 import axios from "axios";
 import { Baseurl } from "./Constant";
@@ -39,8 +39,8 @@ import { Baseurl } from "./Constant";
 //   },
 // ];
 const Test = () => {
+  const navigate = useNavigate();
   const [reviewPage, setReviewPage] = useState(0);
-  const [totalPage, setTotalPage] = useState(0);
   const [reviews, setReviews] = useState<any[]>([]);
   const { state } = useLocation();
   const [loading, setLoading] = useState(false);
@@ -111,7 +111,15 @@ const Test = () => {
           <p className="text-sm text-gray-700">{state.user.user.email}</p>
         </div>
         <div className="flex items-center justify-end gap-3">
-          <Button className="bg-green-700">Buy Now for ₹300{}</Button>
+          <Button
+            className="bg-green-700"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`/arena/${state.user.id}`);
+            }}
+          >
+            Take Test
+          </Button>
         </div>
       </div>
       <div className="min-h-[50dvh] flex flex-col gap-5">
@@ -184,9 +192,25 @@ const Test = () => {
         </div>
         <p className="text-center">That's it</p>
         <div className="flex items-center justify-center gap-5">
-          <Button disabled={reviewPage == 0}>Prev</Button>
+          <Button
+            disabled={reviewPage == 0}
+            onClick={(e) => {
+              e.preventDefault();
+              setReviewPage(reviewPage - 1);
+            }}
+          >
+            Prev
+          </Button>
           <span className="text-2xl">/</span>
-          <Button disabled={reviewPage == totalPage}>Next</Button>
+          <Button
+            disabled={reviewPage < 10}
+            onClick={(e) => {
+              e.preventDefault();
+              setReviewPage(reviewPage + 1);
+            }}
+          >
+            Next
+          </Button>
         </div>
       </div>
     </div>

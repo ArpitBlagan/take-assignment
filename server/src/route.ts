@@ -5,6 +5,7 @@ import {
   addReview,
   geTests,
   getReviews,
+  getSubmissions,
   getTest,
   testSubmission,
   uploadTest,
@@ -39,4 +40,4 @@ router.route("/uploadtest").post(upload.single("file"), uploadTest);
 router.route("/postreview").post(addReview);
 router.route("/getreviews").get(getReviews);
 router.route("/gettest").get(getTest);
-router.route("/submit").post(testSubmission);
+router.route("/submit").post(testSubmission).get(getSubmissions);
