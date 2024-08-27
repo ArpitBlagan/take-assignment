@@ -142,12 +142,12 @@ export const isLoggedIn = async (req: Request, res: Response) => {
   });
 };
 
-export const createOrder = async (req: Request, res: Response) => {
-  const { amount } = req.body;
-  const order = await razorpayInstance.orders.create({
-    amount: amount * 100,
-    currency: "INR",
-  });
-};
+// export const createOrder = async (req: Request, res: Response) => {
+//   const { amount } = req.body;
+//   const order = await razorpayInstance.orders.create({
+//     amount: amount * 100,
+//     currency: "INR",
+//   });
+// };
 
-export const paymentDone = async (req: Request, res: Response) => {};
+// export const paymentDone = async (req: Request, res: Response) => {};
