@@ -53,6 +53,7 @@ const uploadTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                         difficulty,
                         userId: req.user.id,
                         questionCount: questions.length,
+                        price: 100,
                     },
                 });
                 const ff = questions.map((ele) => __awaiter(this, void 0, void 0, function* () {
@@ -161,7 +162,7 @@ const getReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getReviews = getReviews;
 const testSubmission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { answers, testId } = req.body;
-    const { userId } = req.user;
+    const userId = req.user.id;
     try {
         const test = yield __1.prisma.test.findFirst({
             where: { id: testId },
@@ -184,6 +185,7 @@ const testSubmission = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(200).json(history);
     }
     catch (err) {
+        console.log(err);
         res.status(500).json({ message: "something went wrong:(" });
     }
 });

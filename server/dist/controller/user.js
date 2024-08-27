@@ -21,6 +21,10 @@ const sharp_1 = __importDefault(require("sharp"));
 const client_s3_1 = require("@aws-sdk/client-s3");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+// const razorpayInstance = new Razorpay({
+//   key_id: "",
+//   key_secret: "",
+// });
 const s3Client = new client_s3_1.S3Client({
     region: process.env.AWS_S3_REGION,
     credentials: {
@@ -153,3 +157,11 @@ const isLoggedIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 });
 exports.isLoggedIn = isLoggedIn;
+// export const createOrder = async (req: Request, res: Response) => {
+//   const { amount } = req.body;
+//   const order = await razorpayInstance.orders.create({
+//     amount: amount * 100,
+//     currency: "INR",
+//   });
+// };
+// export const paymentDone = async (req: Request, res: Response) => {};

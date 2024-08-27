@@ -14,7 +14,7 @@ const app = (0, express_1.default)();
 const client_1 = require("@prisma/client");
 exports.prisma = new client_1.PrismaClient();
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://take-assignment.vercel.app"],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());

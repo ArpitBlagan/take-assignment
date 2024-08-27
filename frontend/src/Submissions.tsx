@@ -20,6 +20,7 @@ const Submissions = () => {
         const res = await axios.get(`${Baseurl}/submit`, {
           withCredentials: true,
         });
+        console.log(res.data);
         setHistory(res.data);
         setLoading(false);
       } catch (err) {
@@ -37,18 +38,20 @@ const Submissions = () => {
       <p className="text-center font-semibold">Submissions</p>
 
       {loading ? (
-        <div className="h-[70dvh]flex items-center justify-center">
+        <div className="h-[70dvh]flex items-center justify-center text-center h-[70dvh]">
           Loading...
         </div>
       ) : (
-        <div className="h-[70dvh] overflow-y-scroll grid md:grid-cols-3 gap-3">
+        <div className="h-[70dvh] overflow-y-scroll flex flex-col gap-3">
           {historys.map((ele, index) => {
             return (
-              <div className="border rounded-xl" key={index}>
-                <div className="flex items-center justify-end">
-                  <div className="flex flex-col gap-4">
-                    <p className="text-2xl font-semibold">{ele.test.title}</p>
-                    <p>{ele.test.description}</p>
+              <div className="border rounded-xl py-2 px-4" key={index}>
+                <div className="flex items-center justify-end gap-2">
+                  <div className="flex flex-col gap-4 ">
+                    <p className="text-2xl font-semibold text-center">
+                      {ele.test.title}
+                    </p>
+                    <p className="text-gray-600">{ele.test.description}</p>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -69,7 +72,27 @@ const Submissions = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-                <p className="text-sm text-gray-700">Score {ele.score}</p>
+                <div className="text-sm flex  items-center justify-end gap-2  my-2">
+                  <div className="py-2 px-4 bg-red-500 rounded-md flex flex-wrap items-center gap-3 ">
+                    <p>
+                      Topic: <span className="underline">{ele.test.topic}</span>
+                    </p>
+                    <p>
+                      Difficulty:{" "}
+                      <span className="underline">{ele.test.difficulty}</span>
+                    </p>
+                    <p>
+                      {" "}
+                      Total questions:{" "}
+                      <span className="underline">
+                        {ele.test.questionCount}
+                      </span>
+                    </p>
+                    <p className="py-2 px-4 rounded-xl">
+                      <span className="underline">Score {ele.score}</span>
+                    </p>
+                  </div>
+                </div>
               </div>
             );
           })}

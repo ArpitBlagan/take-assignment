@@ -26,7 +26,7 @@ const Home = () => {
       </div>
       <div className="flex items-center justify-center gap-3 flex-col mt-4">
         <iframe
-          src="https://www.loom.com/embed/cf5be2a59a89455c9664bd3ffa14fcd3?sid=ba087e7c-bd05-498c-a6ae-dea73c40d04f"
+          src="https://www.loom.com/embed/2332cfac33e440f284c17c5ce1d75d6a?sid=b03ec8e8-c87e-4c73-8a99-e9dd669398ba"
           className="h-[500px] w-full rounded-xl"
         ></iframe>
         <p className="text-center text-bold leading-loose text-gray-700">

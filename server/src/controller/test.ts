@@ -141,7 +141,7 @@ export const getReviews = async (req: Request, res: Response) => {
 
 export const testSubmission = async (req: Request, res: Response) => {
   const { answers, testId } = req.body;
-  const { userId } = req.user;
+  const userId = req.user.id;
   try {
     const test = await prisma.test.findFirst({
       where: { id: testId as string },
@@ -163,6 +163,7 @@ export const testSubmission = async (req: Request, res: Response) => {
     });
     res.status(200).json(history);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "something went wrong:(" });
   }
 };

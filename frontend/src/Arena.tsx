@@ -10,9 +10,10 @@ import {
 import { Button } from "./components/ui/button";
 import axios from "axios";
 import { Baseurl } from "./Constant";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "./components/ui/use-toast";
 const Arena = () => {
+  const navigate = useNavigate();
   const [id, setId] = useState(-1);
   const [answers, setAnswers] = useState<any[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -70,6 +71,7 @@ const Arena = () => {
         withCredentials: true,
       });
       setSubmitLoading(false);
+      navigate("/submissions");
     } catch (err) {
       toast({
         title: "Not able to submit test please try again later:(",
