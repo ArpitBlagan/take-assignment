@@ -39,6 +39,7 @@ export const uploadTest = async (req: Request, res: Response) => {
             difficulty,
             userId: req.user.id,
             questionCount: questions.length,
+            price: 100,
           },
         });
         const ff = questions.map(async (ele) => {

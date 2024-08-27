@@ -30,7 +30,7 @@ model Test{
   title String
   description String
   topic String
-  price Int
+  price Int @default(0)
   difficulty Difficulty
   purchasers User[] @relation("UserPurchasedTests")
   questionCount Int

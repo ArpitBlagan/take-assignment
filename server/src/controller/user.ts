@@ -5,8 +5,13 @@ import { prisma } from "..";
 import fs from "fs";
 import sharp from "sharp";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import Razorpay from "razorpay";
 import dotenv from "dotenv";
 dotenv.config();
+const razorpayInstance = new Razorpay({
+  key_id: "",
+  key_secret: "",
+});
 const s3Client = new S3Client({
   region: process.env.AWS_S3_REGION as string,
   credentials: {
@@ -136,3 +141,13 @@ export const isLoggedIn = async (req: Request, res: Response) => {
     profileImage: user.profileImage,
   });
 };
+
+export const createOrder = async (req: Request, res: Response) => {
+  const { amount } = req.body;
+  const order = await razorpayInstance.orders.create({
+    amount: amount * 100,
+    currency: "INR",
+  });
+};
+
+export const paymentDone = async (req: Request, res: Response) => {};

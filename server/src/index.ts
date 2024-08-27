@@ -9,7 +9,7 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://take-assignment.vercel.app"],
     credentials: true,
   })
 );
