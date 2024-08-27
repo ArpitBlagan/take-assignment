@@ -2,7 +2,6 @@ import { Response, Request } from "express";
 import { parse } from "csv-parse";
 import fs from "fs";
 import { prisma } from "..";
-import { skip } from "node:test";
 export const uploadTest = async (req: Request, res: Response) => {
   if (!req.file) {
     return res.status(400).json({ message: "no csv file found" });

@@ -8,10 +8,10 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
 dotenv.config();
-const razorpayInstance = new Razorpay({
-  key_id: "",
-  key_secret: "",
-});
+// const razorpayInstance = new Razorpay({
+//   key_id: "",
+//   key_secret: "",
+// });
 const s3Client = new S3Client({
   region: process.env.AWS_S3_REGION as string,
   credentials: {
